@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minecraft Server Homepage</title>
+  <title>Down SMP demo</title>
   <style>
     :root {
       --bg-color: #1e1e1e;
@@ -65,20 +65,21 @@
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to EpicCraft</h1>
+    <h1>Welcome to Down SMP</h1>
     <div class="ip" onclick="copyIP()" title="Click to copy IP">
-      play.epiccraft.net
+      192.168.1.68
     </div>
     <div class="description">
-      Join a world of adventure, survival, and creativity. <br/>
-      Play with friends or make new ones. <br/>
-      Always online. Always fun.
+      Join a world of adventure, survival, and creativity... and conflict! <br/>
+      Play with friends or declare war!<br/>
+      No pain no fun!<br/><br/>
+      Season 0: Minecraft Cavemen Edition
     </div>
   </div>
 
   <script>
     function copyIP() {
-      const ip = 'play.epiccraft.net';
+      const ip = '192.168.1.68';
       navigator.clipboard.writeText(ip).then(() => {
         alert('Server IP copied to clipboard!');
       });
