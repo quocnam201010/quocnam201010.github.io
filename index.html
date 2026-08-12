@@ -720,6 +720,7 @@
 
         const socialLoginButtons =
             document.querySelectorAll(".social-login");
+        let socialLoginTimer = null;
 
         const authPopup =
             document.getElementById("auth-popup");
@@ -841,34 +842,46 @@ if (
             login
         );
 
-        socialLoginButtons.forEach((button) => {
-            button.addEventListener(
-                "click",
-                function () {
-                    const provider =
-                        button.dataset.provider;
+socialLoginButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+        const provider = button.dataset.provider;
 
-                    clearTimeout(socialLoginTimer);
+        if (socialLoginTimer) {
+            clearTimeout(socialLoginTimer);
+        }
 
-                    errorMessage.textContent = "";
+        errorMessage.textContent = "";
 
-                    authPopupHeading.textContent =
-                        "Connecting to " + provider + "...";
+        authPopupHeading.textContent =
+            "Connecting to " + provider + "...";
 
-                    authPopup.classList.add("visible");
-                    authPopup.setAttribute("aria-hidden", "false");
+        authPopup.classList.add("visible");
+        authPopup.setAttribute("aria-hidden", "false");
 
-                    socialLoginTimer =
-                        setTimeout(() => {
-                            authPopup.classList.remove("visible");
-                            authPopup.setAttribute("aria-hidden", "true");
+        socialLoginTimer = setTimeout(() => {
+            authPopupHeading.textContent =
+                provider + " authentication failed.";
 
-                            errorMessage.textContent =
-                                "Something went wrong.";
-                        }, 1300);
-                }
-            );
-        });
+            authPopup.querySelector(".auth-popup-body span").textContent =
+                "Unable to establish a secure connection.";
+
+            socialLoginTimer = setTimeout(() => {
+                authPopup.classList.remove("visible");
+                authPopup.setAttribute("aria-hidden", "true");
+
+                authPopupHeading.textContent =
+                    "Opening provider...";
+
+                authPopup.querySelector(".auth-popup-body span").textContent =
+                    "Waiting for the provider to respond.";
+
+                errorMessage.textContent =
+                    "Something went wrong.";
+            }, 1000);
+
+        }, 1800);
+    });
+});
 
         usernameInput.addEventListener(
             "keydown",
