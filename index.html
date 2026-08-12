@@ -1,25 +1,870 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>useful website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>quocnam201010's Server Panel</title>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap");
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            overflow: hidden;
+            background: #10243a;
+            color: #444;
+            font-family:
+                "Source Sans 3",
+                "Source Sans Pro",
+                "Helvetica Neue",
+                Arial,
+                sans-serif;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        /* =========================================================
+           LOGIN SCREEN
+           ========================================================= */
+
+        #login-screen {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 32px 16px;
+
+            background: #0f2a44;
+
+            transition:
+                opacity 0.55s ease,
+                visibility 0.55s ease;
+
+            z-index: 100;
+        }
+
+        .login-wrapper {
+            width: min(100%, 420px);
+        }
+
+        .panel-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 68px;
+            height: 68px;
+
+            margin: 0 auto 22px;
+
+            color: #ffffff;
+            background: #163b5c;
+
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 4px;
+
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .login-box {
+            background: #ffffff;
+            border-radius: 3px;
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
+        }
+
+        .login-heading {
+            padding: 22px 30px 18px;
+            border-bottom: 1px solid #e5e9ef;
+        }
+
+        .login-heading h1 {
+            margin: 0;
+            color: #2f3842;
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .login-heading p {
+            margin: 5px 0 0;
+            color: #7f8fa4;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .login-form {
+            padding: 24px 30px 28px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #485563;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            display: block;
+            width: 100%;
+
+            height: 42px;
+            padding: 8px 12px;
+
+            color: #2f3842;
+            background: #ffffff;
+
+            border: 1px solid #cfd7e3;
+            border-radius: 3px;
+
+            outline: none;
+
+            transition:
+                border-color 0.15s ease,
+                box-shadow 0.15s ease;
+        }
+
+        .input-group input::placeholder {
+            color: #9aa8b7;
+        }
+
+        .input-group input:focus {
+            border-color: #3c8dbc;
+            box-shadow: 0 0 0 2px rgba(60, 141, 188, 0.18);
+        }
+
+        #login-button {
+            display: block;
+            width: 100%;
+
+            min-height: 42px;
+            margin-top: 4px;
+            padding: 9px 12px;
+
+            color: #ffffff;
+            background: #3c8dbc;
+
+            border: 1px solid #367fa9;
+            border-radius: 3px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.15s ease,
+                border-color 0.15s ease;
+        }
+
+        #login-button:hover,
+        #login-button:focus {
+            background: #367fa9;
+            border-color: #2d6f94;
+        }
+
+        #login-button:disabled {
+            background: #6aa6c8;
+            border-color: #5c95b4;
+            cursor: default;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin: 18px 0;
+
+            color: #9aa8b7;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #edf0f5;
+        }
+
+        .social-logins {
+            display: grid;
+            gap: 10px;
+        }
+
+        .social-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            width: 100%;
+            min-height: 40px;
+            padding: 8px 12px;
+
+            color: #3f4b59;
+            background: #f7f9fb;
+
+            border: 1px solid #d8e0ea;
+            border-radius: 3px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background 0.15s ease,
+                border-color 0.15s ease;
+        }
+
+        .social-login:hover,
+        .social-login:focus {
+            background: #eef3f7;
+            border-color: #c5d0dd;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 20px;
+            height: 20px;
+
+            border-radius: 3px;
+
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .social-icon.google {
+            background: #db4437;
+        }
+
+        .social-icon.facebook {
+            background: #1877f2;
+        }
+
+        .social-icon.discord {
+            background: #5865f2;
+        }
+
+        .auth-popup {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+
+            width: min(92%, 360px);
+
+            overflow: hidden;
+
+            background: #ffffff;
+            border: 1px solid #ccd6e2;
+            border-radius: 4px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+
+            opacity: 0;
+            visibility: hidden;
+            transform: translate(-50%, -12px);
+
+            transition:
+                opacity 0.18s ease,
+                transform 0.18s ease,
+                visibility 0.18s ease;
+
+            z-index: 120;
+        }
+
+        .auth-popup.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 0);
+        }
+
+        .auth-popup-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 8px 10px;
+
+            background: #f2f5f8;
+            border-bottom: 1px solid #d8e0ea;
+        }
+
+        .auth-popup-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #c5ced8;
+        }
+
+        .auth-popup-title {
+            margin-left: 6px;
+            color: #6f7f91;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .auth-popup-body {
+            padding: 18px 20px 20px;
+        }
+
+        .auth-popup-body strong {
+            display: block;
+            color: #2f3842;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .auth-popup-body span {
+            display: block;
+            margin-top: 5px;
+            color: #7f8fa4;
+            font-size: 13px;
+        }
+
+        #error-message {
+            min-height: 18px;
+            margin-top: 12px;
+            color: #dd4b39;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 18px;
+            padding-top: 16px;
+
+            border-top: 1px solid #edf0f5;
+
+            color: #8b99aa;
+            font-size: 12px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+
+            background: #00a65a;
+            border-radius: 50%;
+        }
+
+        .bottom-text {
+            margin-top: 12px;
+            color: #8294a7;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* =========================================================
+           BIRTHDAY SCREEN
+           ========================================================= */
+
+        #birthday-screen {
+            position: fixed;
+            inset: 0;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            overflow-y: auto;
+
+            padding: 60px 20px;
+
+            background:
+                radial-gradient(
+                    circle at 20% 10%,
+                    rgba(255, 255, 255, 0.5),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(255, 130, 190, 0.35),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #ffc6df,
+                    #ffb3d4,
+                    #ffc9e4
+                );
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 1.5s ease,
+                visibility 1.5s ease;
+
+            z-index: 200;
+        }
+
+        #birthday-screen.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .birthday-badge {
+            padding: 7px 14px;
+
+            margin-bottom: 20px;
+
+            color: #d94c8c;
+
+            background: rgba(255, 255, 255, 0.55);
+
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 100px;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+        }
+
+        #birthday-title {
+            margin: 0;
+
+            color: white;
+
+            font-size: clamp(52px, 10vw, 110px);
+
+            font-weight: 900;
+
+            line-height: 0.95;
+
+            text-align: center;
+
+            text-shadow:
+                0 5px 0 #ed8db6,
+                0 12px 30px rgba(190, 60, 120, 0.2);
+
+            animation:
+                birthdayFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes birthdayFloat {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-1deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(1deg);
+            }
+        }
+
+        .birthday-subtitle {
+            margin-top: 20px;
+
+            color: #b84778;
+
+            font-size: 15px;
+            font-weight: 600;
+
+            text-align: center;
+        }
+
+        #gif-container {
+            width: min(95%, 1000px);
+            min-height: 300px;
+
+            margin-top: 40px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: rgba(255, 255, 255, 0.25);
+
+            border: 2px dashed rgba(255, 255, 255, 0.65);
+            border-radius: 8px;
+
+            color: #c34d83;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
 
 
+        #surprise-video {
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: contain;
+
+            pointer-events: none;
+
+            opacity: 0;
+
+            transition: opacity 0.25s ease;
+
+            z-index: 260;
+        }
+
+        #surprise-video.playing {
+            opacity: 1;
+        }
+
+        @media (max-width: 500px) {
+            .login-heading,
+            .login-form {
+                padding-left: 22px;
+                padding-right: 22px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<h1>1 gói cu đơ = 1 sếch ảnh nóng</h1>
-<h1>240k = 800 robux (bán chẵn 400/800/1200)</h1>
-<h2>Window 10 Free activation method. <bold>NOT PIRACY</bold></h2>
-<p>Open PowerShell<br>
-Click the Start Menu, type PowerShell, then open it.<br>
-Copy and paste the code below, then press enter.<br><br>
+    <section id="login-screen">
+        <div class="login-wrapper">
+            <div class="panel-logo">P</div>
 
-irm https://get.activated.win | iex
+            <div class="login-box">
+                <div class="login-heading">
+                    <h1>Login to continue</h1>
+                    <p>Sign in to quocnam201010's server panel.</p>
+                </div>
 
-</p>
+                <div class="login-form">
+                    <div class="input-group">
+                        <label class="input-label" for="username">
+                            Username
+                        </label>
 
-<p>Contact me:</p><br>
-Discord: chi_hieu</p>
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Username"
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label" for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Password"
+                        >
+                    </div>
+
+                    <button id="login-button">
+                        Login
+                    </button>
+
+                    <div class="login-divider">
+                        or
+                    </div>
+
+                    <div class="social-logins">
+                        <button
+                            class="social-login"
+                            type="button"
+                            data-provider="Google"
+                        >
+                            <span class="social-icon google">G</span>
+                            Login with Google
+                        </button>
+
+                        <button
+                            class="social-login"
+                            type="button"
+                            data-provider="Facebook"
+                        >
+                            <span class="social-icon facebook">f</span>
+                            Login with Facebook
+                        </button>
+
+                        <button
+                            class="social-login"
+                            type="button"
+                            data-provider="Discord"
+                        >
+                            <span class="social-icon discord">D</span>
+                            Login with Discord
+                        </button>
+                    </div>
+
+                    <div id="error-message"></div>
+
+                    <div class="system-status">
+                        <div class="status">
+                            <span class="status-dot"></span>
+                            System Online
+                        </div>
+
+                        <div>
+                            Panel v2.4.1
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-text">
+                Copyright 2026 quocnam201010. ALL RIGHTS RESERVED
+            </div>
+        </div>
+
+        <div class="auth-popup" id="auth-popup" aria-hidden="true">
+            <div class="auth-popup-bar">
+                <span class="auth-popup-dot"></span>
+                <span class="auth-popup-dot"></span>
+                <span class="auth-popup-dot"></span>
+                <span class="auth-popup-title">Authentication</span>
+            </div>
+
+            <div class="auth-popup-body">
+                <strong id="auth-popup-heading">Opening provider...</strong>
+                <span>Waiting for the provider to respond.</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="birthday-screen">
+        <div class="birthday-badge">
+            ACCESS GRANTED
+        </div>
+
+        <h1 id="birthday-title">
+            Happy Birthday!
+        </h1>
+
+        <div class="birthday-subtitle">
+            Have a wonderful day!
+        </div>
+
+        <div id="gif-container">
+            GIF DEPLOYMENT AREA
+        </div>
+
+        <video
+            id="surprise-video"
+            src="plane_crash.webm"
+            preload="auto"
+            playsinline
+        ></video>
+
+    </section>
+
+    <script>
+        const loginScreen =
+            document.getElementById("login-screen");
+
+        const birthdayScreen =
+            document.getElementById("birthday-screen");
+
+        const usernameInput =
+            document.getElementById("username");
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const loginButton =
+            document.getElementById("login-button");
+
+        const socialLoginButtons =
+            document.querySelectorAll(".social-login");
+
+        const authPopup =
+            document.getElementById("auth-popup");
+
+        const authPopupHeading =
+            document.getElementById("auth-popup-heading");
+
+        const errorMessage =
+            document.getElementById("error-message");
+
+        const surpriseVideo =
+            document.getElementById("surprise-video");
+
+        function login() {
+            const username =
+                usernameInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+            /*
+             * Cosmetic-only authentication.
+             *
+             * This is intentionally client-side.
+             * Do not use it for real security.
+             */
+            if (
+                username === "anhtho" &&
+                password === "130810"
+            ) {
+                errorMessage.textContent = "";
+
+                loginButton.textContent =
+                    "Access Granted";
+
+                loginButton.disabled = true;
+
+                setTimeout(() => {
+                    loginScreen.style.opacity = "0";
+                    loginScreen.style.visibility = "hidden";
+
+                    birthdayScreen.classList.add("visible");
+
+                    surpriseVideo.currentTime = 0;
+                    surpriseVideo.classList.add("playing");
+
+                    const playPromise =
+                        surpriseVideo.play();
+
+                    if (playPromise) {
+                        playPromise.catch(() => {
+                            surpriseVideo.muted = true;
+                            surpriseVideo.play().catch(() => {});
+                        });
+                    }
+                }, 400);
+            } else {
+                errorMessage.textContent =
+                    "Invalid username or password.";
+
+                const box =
+                    document.querySelector(".login-box");
+
+                box.animate(
+                    [
+                        {
+                            transform: "translateX(0)"
+                        },
+                        {
+                            transform: "translateX(-8px)"
+                        },
+                        {
+                            transform: "translateX(8px)"
+                        },
+                        {
+                            transform: "translateX(-5px)"
+                        },
+                        {
+                            transform: "translateX(5px)"
+                        },
+                        {
+                            transform: "translateX(0)"
+                        }
+                    ],
+                    {
+                        duration: 350
+                    }
+                );
+            }
+        }
+
+        loginButton.addEventListener(
+            "click",
+            login
+        );
+
+        socialLoginButtons.forEach((button) => {
+            button.addEventListener(
+                "click",
+                function () {
+                    const provider =
+                        button.dataset.provider;
+
+                    clearTimeout(socialLoginTimer);
+
+                    errorMessage.textContent = "";
+
+                    authPopupHeading.textContent =
+                        "Connecting to " + provider + "...";
+
+                    authPopup.classList.add("visible");
+                    authPopup.setAttribute("aria-hidden", "false");
+
+                    socialLoginTimer =
+                        setTimeout(() => {
+                            authPopup.classList.remove("visible");
+                            authPopup.setAttribute("aria-hidden", "true");
+
+                            errorMessage.textContent =
+                                "Something went wrong.";
+                        }, 1300);
+                }
+            );
+        });
+
+        usernameInput.addEventListener(
+            "keydown",
+            function (event) {
+                if (event.key === "Enter") {
+                    login();
+                }
+            }
+        );
+
+        passwordInput.addEventListener(
+            "keydown",
+            function (event) {
+                if (event.key === "Enter") {
+                    login();
+                }
+            }
+        );
+        surpriseVideo.addEventListener("ended", () => {
+            surpriseVideo.classList.remove("playing");
+        });
+
+        surpriseVideo.addEventListener("error", () => {
+            surpriseVideo.classList.remove("playing");
+            console.error("Could not load plane_crash.webm");
+        });
+    </script>
 </body>
 </html>
