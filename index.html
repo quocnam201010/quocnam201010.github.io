@@ -7,6 +7,26 @@
     <title>quocnam201010's Server Panel</title>
 
     <style>
+/* DEBUG: invisible button in top-right corner */
+#debug-login {
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    width: 70px;
+    height: 70px;
+
+    padding: 0;
+    margin: 0;
+
+    opacity: 0;
+    background: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    z-index: 10000;
+}
         @import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap");
 
         * {
@@ -508,26 +528,172 @@
             text-align: center;
         }
 
-        #gif-container {
-            width: min(95%, 1000px);
-            min-height: 300px;
+/* =========================================================
+   BIRTHDAY CAKE + STICKY NOTE
+   ========================================================= */
 
-            margin-top: 40px;
+#gif-container {
+    width: min(95%, 1100px);
+    min-height: 360px;
+    margin-top: 40px;
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    align-items: stretch;
 
-            background: rgba(255, 255, 255, 0.25);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+}
 
-            border: 2px dashed rgba(255, 255, 255, 0.65);
-            border-radius: 8px;
+/* LEFT / RIGHT CAKE */
 
-            color: #c34d83;
+.cake-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-            font-size: 14px;
-            font-weight: 700;
-        }
+    min-width: 0;
+    min-height: 360px;
+
+    background: transparent;
+}
+
+.cake-side video {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 360px;
+
+    object-fit: contain;
+
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+/* =========================================================
+   STICKY NOTE IN THE MIDDLE
+   ========================================================= */
+
+.birthday-note {
+    position: relative;
+
+    min-height: 360px;
+    padding: 55px 40px 40px;
+
+    color: #51462c;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #fff2a8 0px,
+            #fff2a8 31px,
+            #e3d47f 32px,
+            #fff2a8 33px
+        );
+
+    border-radius: 3px;
+
+    box-shadow:
+        0 8px 25px rgba(125, 96, 25, 0.18),
+        inset 0 0 35px rgba(255, 220, 100, 0.16);
+
+    transform: rotate(-0.4deg);
+}
+
+/* Tape */
+
+.birthday-note::before {
+    content: "";
+
+    position: absolute;
+    top: -9px;
+    left: 50%;
+
+    width: 105px;
+    height: 25px;
+
+    transform: translateX(-50%) rotate(-2deg);
+
+    background: rgba(255, 255, 255, 0.42);
+
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   EASY-TO-EDIT TEXT
+   ========================================================= */
+
+.note-line {
+    min-height: 33px;
+
+    font-family:
+        "Comic Sans MS",
+        "Segoe Print",
+        cursive;
+
+    font-size: 20px;
+    line-height: 33px;
+
+    text-align: center;
+}
+
+.note-title {
+    margin-bottom: 8px;
+
+    color: #d05b78;
+
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.note-signature {
+    margin-top: 25px;
+
+    font-family:
+        "Comic Sans MS",
+        "Segoe Print",
+        cursive;
+
+    color: #7c6840;
+
+    font-size: 17px;
+    text-align: right;
+}
+
+@media (max-width: 750px) {
+    #gif-container {
+        grid-template-columns: 0.8fr 1.6fr 0.8fr;
+        min-height: 300px;
+    }
+
+    .cake-side {
+        min-height: 300px;
+    }
+
+    .birthday-note {
+        min-height: 300px;
+        padding: 45px 18px 30px;
+    }
+
+    .note-line {
+        font-size: 15px;
+        line-height: 30px;
+    }
+
+    .note-title {
+        font-size: 22px;
+    }
+
+    .note-signature {
+        font-size: 14px;
+    }
+}
 
 
         #surprise-video {
@@ -602,21 +768,17 @@
     font-size: 15px;
     line-height: 1.6;
 }
-#cake-video {
-    display: block;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 300px;
-    object-fit: contain;
-    border: none;
-    outline: none;
-    background: transparent;
-}
+
     </style>
 </head>
 
 <body>
+<!-- DEBUG: invisible instant-login button -->
+<button
+    id="debug-login"
+    aria-label="Debug instant login"
+    type="button"
+></button>
 <div id="device-warning">
     <div id="device-warning-content">
         <h1>PC Required</h1>
@@ -745,20 +907,62 @@
         </h1>
 
         <div class="birthday-subtitle">
-            Have a wonderful day!
         </div>
 
-        <div id="gif-container">
-<video
-    id="cake-video"
-    src="eating_cake_transparent.webm"
-    autoplay
-    loop
-    muted
-    playsinline
-    preload="auto"
-></video>
+<div id="gif-container">
+
+    <!-- LEFT CAKE -->
+    <div class="cake-side cake-left">
+        <video
+            src="eating_cake_transparent.webm"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="auto"
+        ></video>
+    </div>
+
+    <!-- =================================================
+         EDIT THE MESSAGE HERE
+         ================================================= -->
+    <div class="birthday-note">
+
+        <div class="note-line note-title">
+            HAPPY BIRTHDAY!
         </div>
+
+        <div class="note-line">
+            Hope you have an amazing day!
+        </div>
+
+        <div class="note-line">
+            Wishing you lots of happiness
+        </div>
+
+        <div class="note-line">
+            and plenty of cake! 🎂
+        </div>
+
+        <div class="note-signature">
+            - quocnam201010
+        </div>
+
+    </div>
+
+    <!-- RIGHT CAKE -->
+    <div class="cake-side cake-right">
+        <video
+            src="eating_cake_transparent.webm"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="auto"
+        ></video>
+    </div>
+
+</div>
 
         <video
             id="surprise-video"
@@ -993,6 +1197,12 @@ socialLoginButtons.forEach((button) => {
             surpriseVideo.classList.remove("playing");
             console.error("Could not load plane_crash.webm");
         });
+// DEBUG: instantly trigger the normal login sequence
+document.getElementById("debug-login").addEventListener("click", () => {
+    usernameInput.value = "admin";
+    passwordInput.value = "@20102010@@@";
+    login();
+});
     </script>
 </body>
 </html>
