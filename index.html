@@ -537,7 +537,12 @@
             width: 100%;
             height: 100%;
 
-            object-fit: contain;
+            object-fit: cover;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
 
             pointer-events: none;
 
@@ -770,7 +775,7 @@
                             surpriseVideo.play().catch(() => {});
                         });
                     }
-                }, 400);
+                }, 4000);
             } else {
                 errorMessage.textContent =
                     "Invalid username or password.";
